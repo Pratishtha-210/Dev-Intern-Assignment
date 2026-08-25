@@ -33,6 +33,7 @@ export const voltLibrary: UiLibrary = {
   levers: null,
   cssFiles: [
     'src/components/atoms/atoms.css',
+    'src/components/molecules/molecules.css',
     'src/components/organisms/organisms.css',
   ],
   tiers: [

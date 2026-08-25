@@ -6,6 +6,8 @@ import {
   RADIUS_FACTORS,
 } from './brand';
 import type { BrandDefinition } from './brand';
+import { emitLayer, mergeEmitted } from './emit';
+import { GLOBAL_TOKENS } from './global';
 
 const VOLT: BrandDefinition = {
   name: 'Volt',
@@ -165,6 +167,18 @@ describe('buildSemanticTokens', () => {
     for (const role of ROLES) {
       expect(core.has(role), `missing semantic role: ${role}`).toBe(true);
     }
+  });
+
+  it('emits distinct gray scales when layer ordering merges semantic over global primitives', () => {
+    const mauve = mergeEmitted(
+      emitLayer(GLOBAL_TOKENS),
+      emitLayer(buildSemanticTokens({ ...VOLT, grayTint: 'mauve' })),
+    );
+    const sand = mergeEmitted(
+      emitLayer(GLOBAL_TOKENS),
+      emitLayer(buildSemanticTokens({ ...VOLT, grayTint: 'sand' })),
+    );
+    expect(mauve.light['--ev-gray-9']).not.toBe(sand.light['--ev-gray-9']);
   });
 });
 
